@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Juno</string>
+    <string name="txt_pesquisar">Pesquisar</string>
+    <string name="txt_insira_sua_pesquisa">Insira sua pesquisa</string>
 </resources>
