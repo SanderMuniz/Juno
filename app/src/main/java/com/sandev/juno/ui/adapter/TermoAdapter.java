@@ -17,8 +17,8 @@ import java.util.List;
 
 public class TermoAdapter extends RecyclerView.Adapter<TermoAdapter.MyViewHolder> {
 
-    private List<Termo> mList;
-    private LayoutInflater mLayoutInflate;
+    private final List<Termo> mList;
+    private final LayoutInflater mLayoutInflate;
 
     public TermoAdapter(Context c, List<Termo> list) {
         mList = list;
@@ -29,8 +29,7 @@ public class TermoAdapter extends RecyclerView.Adapter<TermoAdapter.MyViewHolder
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = mLayoutInflate.inflate(R.layout.item_terms_list, viewGroup, false);
-        MyViewHolder mvh = new MyViewHolder(view);
-        return mvh;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -49,9 +48,10 @@ public class TermoAdapter extends RecyclerView.Adapter<TermoAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivImage;
-        public TextView tvName, tvScore;
+        final TextView tvName;
+        final TextView tvScore;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
             tvName = itemView.findViewById(R.id.item_nome);

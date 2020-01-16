@@ -20,7 +20,6 @@ import com.sandev.juno.ui.adapter.TermoAdapter;
 import com.sandev.juno.ui.adapter.listener.RecyclerItemClickListener;
 import com.sandev.juno.ui.detalhe.DetalheTermoActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import static com.sandev.juno.utils.Utils.hideKeyboard;
 public class ListaTermosActivity extends AppCompatActivity implements ListaTermosContract.view {
 
     public static final String CHAVE_INTENT = "termo";
-    private static final String TAG_RESULTADO = "Resultados: ";
     private TextView termoBusca;
     private TextView qtdResultado;
     private ProgressBar progressBar;
@@ -38,7 +36,6 @@ public class ListaTermosActivity extends AppCompatActivity implements ListaTermo
     private ListaTermosContract.presenter mPresenter;
     private List<Termo> mList;
     private Termo termSelect;
-    private TermoAdapter adapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -49,20 +46,22 @@ public class ListaTermosActivity extends AppCompatActivity implements ListaTermo
         configuraBotaoBuscar();
     }
 
-    private void configuraBotaoBuscar() {
-        buscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    @Override
+    public void informaUI(String mensagem) {
+        Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
+    }
 
-                String termo = termoBusca.getText().toString().trim().toLowerCase();
-                Log.i("teste", "buscar:  activity");
-                if (!TextUtils.isEmpty(termo)) {
-                    hideKeyboard(ListaTermosActivity.this);
-                    progressBar.setVisibility(View.VISIBLE);
-                    mPresenter.buscar(termo, ListaTermosActivity.this);
-                } else {
-                    Toast.makeText(ListaTermosActivity.this, "Necessário informar algum termo!", Toast.LENGTH_SHORT).show();
-                }
+    private void configuraBotaoBuscar() {
+        buscar.setOnClickListener(view -> {
+
+            String termo = termoBusca.getText().toString().trim().toLowerCase();
+            Log.i("teste", "buscar:  activity");
+            if (!TextUtils.isEmpty(termo)) {
+                hideKeyboard(ListaTermosActivity.this);
+                progressBar.setVisibility(View.VISIBLE);
+                mPresenter.buscar(termo, ListaTermosActivity.this);
+            } else {
+                Toast.makeText(ListaTermosActivity.this, "Necessário informar algum termo!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -115,12 +114,12 @@ public class ListaTermosActivity extends AppCompatActivity implements ListaTermo
             progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
         } else {
-            qtdResultado.setText(TAG_RESULTADO + list.size());
+            qtdResultado.setText(getString(R.string.txt_item_resultado) + list.size());
             progressBar.setVisibility(View.GONE);
             LinearLayoutManager layoutManager
                     = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             recycler.setLayoutManager(layoutManager);
-            adapter = new TermoAdapter(this, new ArrayList<>(list));
+            TermoAdapter adapter = new TermoAdapter(this, new ArrayList<>(list));
             recycler.setAdapter(adapter);
         }
     }

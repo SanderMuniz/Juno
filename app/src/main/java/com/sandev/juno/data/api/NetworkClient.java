@@ -4,9 +4,9 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class NetworkClient {
-    public static final String URL_BASE = "https://api.github.com";
+    private static final String URL_BASE = "https://api.github.com";
 
-    public static Retrofit retrofit;
+    private static Retrofit retrofit;
 
     public static Retrofit getRetrofitClient() {
         if (retrofit == null) {

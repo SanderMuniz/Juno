@@ -13,22 +13,24 @@ public interface ListaTermosContract {
 
     interface view {
         void retornaLista(List<Termo> list);
+
+        void informaUI(String mensagem);
     }
 
     interface presenter {
         void setView(view view);
 
-        public Context getContext();
+        @SuppressWarnings("SameReturnValue")
+        Context getContext();
 
         void buscar(String termo, Context context);
         //implements code
         void retornaDados(Response response);
 
-        void setContext(Context context);
     }
 
 
     interface call {
-
+        void buscar(String termo);
     }
 }

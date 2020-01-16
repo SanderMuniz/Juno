@@ -2,21 +2,21 @@ package com.sandev.juno.ui.detalhe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.sandev.juno.R;
+import com.sandev.juno.data.database.JunoDatabase;
+import com.sandev.juno.data.database.dao.TermoDAO;
 import com.sandev.juno.data.model.Termo;
 
+import java.util.Objects;
+
 import static com.sandev.juno.ui.lista.ListaTermosActivity.CHAVE_INTENT;
+import static com.sandev.juno.utils.Utils.isConnected;
 
-//todo imports
-public class DetalheTermoActivity extends AppCompatActivity implements DetalheTermoContract.view {
+public class DetalheTermoActivity extends AppCompatActivity{
 
-    private DetalheTermoContract.presenter mPresenter;
-
-    private Termo termo;
     private TextView name;
     private TextView full_name;
     private TextView description;
@@ -26,9 +26,6 @@ public class DetalheTermoActivity extends AppCompatActivity implements DetalheTe
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe_termo_layout);
-        if (mPresenter == null) mPresenter = new DetalheTermoPresenter();
-        mPresenter.setView(this);
-        //implements code
         iniciaViews();
         preencheCampos();
     }
@@ -36,19 +33,18 @@ public class DetalheTermoActivity extends AppCompatActivity implements DetalheTe
     private void preencheCampos() {
         Intent dados = getIntent();
         if (dados.hasExtra(CHAVE_INTENT)) {
-            termo = (Termo) dados.getSerializableExtra(CHAVE_INTENT);
+            Termo termo = (Termo) dados.getSerializableExtra(CHAVE_INTENT);
+            if (!TextUtils.isEmpty(Objects.requireNonNull(termo).getName())){
+                name.setText(termo.getName());
+                score.setText(String.valueOf(termo.getScore()));
+                full_name.setText(termo.getFull_name());
+                description.setText(termo.getDescription());
 
-            name.setText(termo.getName());
-            score.setText(String.valueOf(termo.getScore()));
-            full_name.setText(termo.getFull_name());
-            description.setText(termo.getDescription());
-
-/*            TermDAO dao = JunoDatabase.getInstance(this).getTermDAO();
-            Log.i("teste", "salvando... ");
-
-            if(isConnected(this)){
-                dao.salvar(term);
-            }*/
+                TermoDAO dao = JunoDatabase.getInstance(this).getTermDAO();
+                if(isConnected(this)){
+                    dao.salvar(termo);
+                }
+            }
         }
     }
 
