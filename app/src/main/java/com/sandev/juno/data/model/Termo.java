@@ -1,20 +1,20 @@
 package com.sandev.juno.data.model;
 
-public class Termo {
+import java.io.Serializable;
+
+public class Termo implements Serializable {
 
     private int _id;
     private String id;
     private String name;
-    private String nameSearch;
     private String full_name;
     private String description;
     private double score;
 
-    public Termo(int _id, String id, String name, String nameSearch, String full_name, String description, double score) {
+    public Termo(int _id, String id, String name, String full_name, String description, double score) {
         this._id = _id;
         this.id = id;
         this.name = name;
-        this.nameSearch = nameSearch;
         this.full_name = full_name;
         this.description = description;
         this.score = score;
@@ -45,14 +45,6 @@ public class Termo {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNameSearch() {
-        return nameSearch;
-    }
-
-    public void setNameSearch(String nameSearch) {
-        this.nameSearch = nameSearch;
     }
 
     public String getFull_name() {

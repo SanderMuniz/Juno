@@ -1,11 +1,11 @@
 package com.sandev.juno.ui.lista;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +18,9 @@ import com.sandev.juno.R;
 import com.sandev.juno.data.model.Termo;
 import com.sandev.juno.ui.adapter.TermoAdapter;
 import com.sandev.juno.ui.adapter.listener.RecyclerItemClickListener;
+import com.sandev.juno.ui.detalhe.DetalheTermoActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +56,11 @@ public class ListaTermosActivity extends AppCompatActivity implements ListaTermo
 
                 String termo = termoBusca.getText().toString().trim().toLowerCase();
                 Log.i("teste", "buscar:  activity");
-                if(!TextUtils.isEmpty(termo)){
+                if (!TextUtils.isEmpty(termo)) {
                     hideKeyboard(ListaTermosActivity.this);
                     progressBar.setVisibility(View.VISIBLE);
                     mPresenter.buscar(termo, ListaTermosActivity.this);
-                }else {
+                } else {
                     Toast.makeText(ListaTermosActivity.this, "Necessário informar algum termo!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -81,9 +83,9 @@ public class ListaTermosActivity extends AppCompatActivity implements ListaTermo
                     @Override
                     public void onItemClick(View view, int position) {
                         termSelect = mList.get(position);
-//                        Intent i = new Intent(ListaTermosActivity.this, DetailTermActivity.class);
-//                        i.putExtra(CHAVE_INTENT, termSelect);
-//                        startActivity(i);
+                        Intent i = new Intent(ListaTermosActivity.this, DetalheTermoActivity.class);
+                        i.putExtra(CHAVE_INTENT, termSelect);
+                        startActivity(i);
                     }
 
                     @Override
@@ -109,10 +111,10 @@ public class ListaTermosActivity extends AppCompatActivity implements ListaTermo
     @Override
     public void retornaLista(List<Termo> list) {
         mList = list;
-        if(list.size() <1){
+        if (list.size() < 1) {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             qtdResultado.setText(TAG_RESULTADO + list.size());
             progressBar.setVisibility(View.GONE);
             LinearLayoutManager layoutManager
