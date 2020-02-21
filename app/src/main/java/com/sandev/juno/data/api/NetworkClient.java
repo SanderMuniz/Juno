@@ -10,10 +10,9 @@ public class NetworkClient {
 
     public static Retrofit getRetrofitClient() {
         if (retrofit == null) {
-            //Defining the Retrofit using Builder
             retrofit = new Retrofit.Builder()
-                    .baseUrl(URL_BASE) //This is the only mandatory call on Builder object.
-                    .addConverterFactory(GsonConverterFactory.create()) // Convertor library used to convert response into POJO
+                    .baseUrl(URL_BASE)
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;

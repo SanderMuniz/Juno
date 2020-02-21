@@ -8,7 +8,6 @@ import java.util.List;
 
 import retrofit.Response;
 
-//todo imports
 public interface ListaTermosContract {
 
     interface view {
@@ -20,13 +19,11 @@ public interface ListaTermosContract {
     interface presenter {
         void setView(view view);
 
-        @SuppressWarnings("SameReturnValue")
         Context getContext();
 
         void buscar(String termo, Context context);
-        //implements code
-        void retornaDados(Response response);
 
+        void retornaDados(Response response);
     }
 
 

@@ -30,7 +30,7 @@ public class ListaTermosCall implements ListaTermosContract.call {
 
             @Override
             public void onFailure(Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }

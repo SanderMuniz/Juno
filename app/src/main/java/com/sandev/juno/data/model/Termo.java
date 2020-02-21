@@ -75,4 +75,8 @@ public class Termo implements Serializable {
     public void setScore(double score) {
         this.score = score;
     }
+
+    public String getScoreAdaptado(){
+        return "Score: "+score;
+    }
 }

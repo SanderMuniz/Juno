@@ -33,32 +33,42 @@ public class ListaTermosPresenter implements ListaTermosContract.presenter {
         return null;
     }
 
-    //implements code
-
     @Override
     public void buscar(String termo, Context context) {
         if(isConnected(context)){
             mCall.buscar(termo);
         }else {
-            mView.informaUI("Sem conexão com internet ! \n Verificando dados off-line");
+            enviaMensagemUI("Sem conexão com internet ! \n Verificando dados off-line");
             buscarNoBanco(termo, context);
         }
+    }
+
+    private void enviaMensagemUI(String s) {
+        mView.informaUI(s);
     }
 
     private void buscarNoBanco(String termo, Context context) {
         TermoDAO dao = JunoDatabase.getInstance(context).getTermDAO();
         List<Termo> list = dao.listar(termo);
+        validaQuantidadeDeItensNaLista(context, list);
+    }
+
+    private void validaQuantidadeDeItensNaLista(Context context, List<Termo> list) {
         if (list.size() < 1){
-            mView.informaUI("Não foram encontrados registros para o termo buscado. \n Listando os termos gravados no banco.");
+            enviaMensagemUI("Não foram encontrados registros para o termo buscado. \n Listando os termos gravados no banco.");
             listarTodosTermos(context);
         }else {
-            mView.retornaLista(list);
+            retornaListaParaUI(list);
         }
     }
 
     private void listarTodosTermos(Context context) {
         TermoDAO dao = JunoDatabase.getInstance(context).getTermDAO();
         List<Termo> list = dao.listarTodos();
+        retornaListaParaUI(list);
+    }
+
+    private void retornaListaParaUI(List<Termo> list) {
         mView.retornaLista(list);
     }
 
@@ -66,6 +76,6 @@ public class ListaTermosPresenter implements ListaTermosContract.presenter {
     public void retornaDados(Response response) {
         Retorno retorno = (Retorno) response.body();
         List<Termo> list = retorno.getItems();
-        mView.retornaLista(list);
+        retornaListaParaUI(list);
     }
 }

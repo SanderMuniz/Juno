@@ -26,26 +26,42 @@ public class DetalheTermoActivity extends AppCompatActivity{
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe_termo_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         iniciaViews();
         preencheCampos();
     }
 
     private void preencheCampos() {
+        verificaSeTemDadosNaIntent();
+    }
+
+    private void verificaSeTemDadosNaIntent() {
         Intent dados = getIntent();
         if (dados.hasExtra(CHAVE_INTENT)) {
-            Termo termo = (Termo) dados.getSerializableExtra(CHAVE_INTENT);
-            if (!TextUtils.isEmpty(Objects.requireNonNull(termo).getName())){
-                name.setText(termo.getName());
-                score.setText(String.valueOf(termo.getScore()));
-                full_name.setText(termo.getFull_name());
-                description.setText(termo.getDescription());
-
-                TermoDAO dao = JunoDatabase.getInstance(this).getTermDAO();
-                if(isConnected(this)){
-                    dao.salvar(termo);
-                }
-            }
+            validaDadosVindosDaIntent(dados);
         }
+    }
+
+    private void validaDadosVindosDaIntent(Intent dados) {
+        Termo termo = (Termo) dados.getSerializableExtra(CHAVE_INTENT);
+        if (!TextUtils.isEmpty(Objects.requireNonNull(termo).getName())){
+            apresentarDados(termo);
+            salvarNoBanco(termo);
+        }
+    }
+
+    private void salvarNoBanco(Termo termo) {
+        TermoDAO dao = JunoDatabase.getInstance(this).getTermDAO();
+        if(isConnected(this)){
+            dao.salvar(termo);
+        }
+    }
+
+    private void apresentarDados(Termo termo) {
+        name.setText(termo.getName());
+        score.setText(String.valueOf(termo.getScore()));
+        full_name.setText(termo.getFull_name());
+        description.setText(termo.getDescription());
     }
 
     private void iniciaViews() {
